@@ -2,15 +2,20 @@ import React, {Component} from 'react';
 
 
 class List extends Component {
+
     render() {
+
         return (
             <div>
+                <p></p>
                 <ul>
-                    {this.props.items.map((item, i) => <li key={i}>{item}
+                    {
+                        this.props.items.map((item, i) => <li key={i}>{item}
                         <button onClick={() => {this.props.delete(i)}}>Delete
                         </button>
-                        <button onClick={() => {this.props.edit(i)}}>Edit</button>
-                    </li>)}
+                         <button onClick={(e) => {this.props.edit(i,e)}}>{this.props.editing ? 'Save' :  'Edit'} </button>
+                    </li>)
+                    }
                 </ul>
 
 

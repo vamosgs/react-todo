@@ -9,13 +9,16 @@ class App extends Component {
         this.handleAdd = this.handleAdd.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.handleSave = this.handleSave.bind(this);
 
         this.state = {
             items: [
                 'task 1',
                 'task 2',
                 'task 3'
-            ]
+            ],
+            editing: false,
+
         }
     }
 
@@ -30,15 +33,25 @@ class App extends Component {
         delete TaskObj.items[task];
         this.setState(TaskObj)
     }
-    handleEdit(task) {
-        console.log('edit ' +task)
-        let TaskObj = {items:this.state.items};
+    handleSave (e) {
+        this.setState({saving:e.target.value});
+    }
+    handleEdit(task,event) {
+        let obj = this.state;
+        obj.editing = this.state.editing ? false : true;
+        if (obj.editing) {
+            obj.items[task] = <input onChange={(e)=>{this.handleSave(e)}} defaultValue={obj.items[task]} type="text"/>;
+            this.setState(obj);
+        } else {
+            obj.items[task] = this.state.saving;
+            this.setState(obj);
+        }
     }
 
     render() {
         return (
             <div>
-                <List  delete={this.handleDelete} edit={this.handleEdit} items={this.state.items}/>
+                <List  editing={this.state.editing} delete={this.handleDelete} edit={this.handleEdit} items={this.state.items}/>
                 <Add add={this.handleAdd}  />
             </div>     );
     }
