@@ -22371,7 +22371,7 @@ var App = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'App' },
                 _react2.default.createElement(_List2.default, { editing: this.state.editing, 'delete': this.handleDelete, edit: this.handleEdit, items: this.state.items }),
                 _react2.default.createElement(_Add2.default, { add: this.handleAdd })
             );
@@ -22433,6 +22433,11 @@ var List = function (_Component) {
                         return _react2.default.createElement(
                             'li',
                             { key: i },
+                            _react2.default.createElement(
+                                'button',
+                                null,
+                                '+'
+                            ),
                             item,
                             _react2.default.createElement(
                                 'button',

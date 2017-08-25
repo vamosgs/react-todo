@@ -10,7 +10,9 @@ class List extends Component {
                 <p></p>
                 <ul>
                     {
-                        this.props.items.map((item, i) => <li key={i}>{item}
+                        this.props.items.map((item, i) => <li key={i}>
+                            <button>+</button>
+                            {item}
                         <button onClick={() => {this.props.delete(i)}}>Delete
                         </button>
                          <button onClick={(e) => {this.props.edit(i,e)}}>{this.props.editing ? 'Save' :  'Edit'} </button>

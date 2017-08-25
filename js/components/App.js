@@ -50,7 +50,7 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <div className="App">
                 <List  editing={this.state.editing} delete={this.handleDelete} edit={this.handleEdit} items={this.state.items}/>
                 <Add add={this.handleAdd}  />
             </div>     );
