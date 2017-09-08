@@ -3,7 +3,7 @@ import ListA from './List.jsx';
 import Add from './Add.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import Snackbar from 'material-ui/Snackbar';
 injectTapEventPlugin();
 
 class App extends Component {
@@ -20,6 +20,7 @@ class App extends Component {
                 'task 2',
                 'task 3'
             ],
+            open: false,
             editing: false,
 
         }
@@ -27,9 +28,15 @@ class App extends Component {
 
     handleAdd(event, task) {
         event.preventDefault();
-        let TaskObj = {items: this.state.items};
-        let newTaskArr = TaskObj.items.push(task);
-        this.setState(TaskObj)
+        if (task.length === 0 || task[0] === '') {
+            this.setState({
+                open: true,
+            });
+        }  else  {
+            let TaskObj = {items: this.state.items};
+            TaskObj.items.push(task);
+            this.setState(TaskObj)
+        }
     }
 
     handleDelete(task) {
@@ -46,7 +53,7 @@ class App extends Component {
         let obj = this.state;
         obj.editing = this.state.editing ? false : true;
         if (obj.editing) {
-            obj.items[task] =  <input onChange={(e) => {
+            obj.items[task] =  <input className='editing' noValidate onChange={(e) => {
                 this.handleSave(e)
             }} defaultValue={obj.items[task]} type="text"/>;
             this.setState(obj);
@@ -60,6 +67,12 @@ class App extends Component {
         return (
             <MuiThemeProvider>
                 <div className="App">
+                    <Snackbar
+                        open={this.state.open}
+                        message="Can't Add empty task or Task already exist"
+                        autoHideDuration={2000}
+                        onRequestClose={this.handleRequestClose}
+                    />
                     <ListA editing={this.state.editing} delete={this.handleDelete} edit={this.handleEdit}
                           items={this.state.items}/>
                     <Add add={this.handleAdd}/>

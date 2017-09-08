@@ -5,6 +5,8 @@ class Add extends Component {
     constructor(props) {
         super(props);
         this.handleTask = this.handleTask.bind(this);
+        this.handleDefault = this.handleDefault.bind(this);
+        this.handleClear = this.handleClear.bind(this);
         this.state = {
             dataSource: [],
             task: ''
@@ -18,19 +20,34 @@ class Add extends Component {
         ]
         })
     }
+    handleDefault(e) {
+        e.preventDefault();
+        // this.refs.field.state.searchText = '';
 
+    }
+    handleClear() {
+        console.log('clear')
+    }
     render() {
+
         return (
             <div>
-                <form >
+                <form onSubmit={this.handleDefault}>
                     <AutoComplete
-                        hintText="Type anything"
+                        ref={'field'}
+                        hintText="Add Task"
                         dataSource={this.state.dataSource}
                         onUpdateInput={this.handleTask}
                     />
-                    <FlatButton label="ADD" onClick={(event) => {
+                    <FlatButton  label="ADD"  onClick={ (event) => {
                         this.props.add(event, this.state.dataSource)
+
+                        console.log(this.refs.field.refs.searchTextField.input.value)
+                        // this.refs.field.refs.searchTextField.input.value = null;
+                        this.refs.field.refs.searchTextField.input.value = '';
+                        console.log(this.refs.field.refs.searchTextField.input.value)
                     }}/>
+
                 </form>
             </div>     );
     }
