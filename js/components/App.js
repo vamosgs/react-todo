@@ -4,6 +4,7 @@ import Add from './Add.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Snackbar from 'material-ui/Snackbar';
+import Circle from 'react-preloaders/Preloaders/Circle.jsx';
 injectTapEventPlugin();
 
 class App extends Component {
@@ -13,16 +14,16 @@ class App extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
-
+        this.getNewVal = this.getNewVal.bind(this);
         this.state = {
             items: [
-                'task 1',
-                'task 2',
-                'task 3'
+                {
+                    name: 'task1',
+                    editing: false
+                }
             ],
             open: false,
-            editing: false,
-
+            editedtext: null
         }
     }
 
@@ -33,48 +34,54 @@ class App extends Component {
                 open: true,
             });
         }  else  {
-            let TaskObj = {items: this.state.items};
-            TaskObj.items.push(task);
-            this.setState(TaskObj)
+            this.setState({...this.state.items, items : [...this.state.items , {name: task, editing: false}]})
         }
     }
 
     handleDelete(task) {
         let TaskObj = {items: this.state.items};
-        delete TaskObj.items[task];
+        TaskObj.items.splice(task, 1);
         this.setState(TaskObj)
     }
 
-    handleSave(e) {
-        this.setState({saving: e.target.value});
+    handleSave(e, i) {
+        let obj = this.state;
+        obj.items[i].name = this.state.editedtext;
+        obj.items[i].editing = false;
+        this.setState(obj)
     }
 
     handleEdit(task, event) {
+        let thisTask = this.state.items[task].name;
+        this.setState({
+            editedtext : thisTask
+        })
+        console.log(this.state.editedtext, this.state.items[task].name)
         let obj = this.state;
-        obj.editing = this.state.editing ? false : true;
-        if (obj.editing) {
-            obj.items[task] =  <input className='editing' noValidate onChange={(e) => {
-                this.handleSave(e)
-            }} defaultValue={obj.items[task]} type="text"/>;
-            this.setState(obj);
-        } else {
-            obj.items[task] = this.state.saving;
-            this.setState(obj);
+        obj.items[task].editing = this.state.editing ? false : true;
+        if (obj.items[task].editing) {
+            obj.items[task].name =  <input ref={input => this.Editing = input} className='editing' onChange={this.getNewVal} noValidate defaultValue={obj.items[task].name} type="text"/>;
         }
     }
-
+    getNewVal(e) {
+        this.setState({
+           editedtext: e.target.value
+        });
+    }
     render() {
         return (
             <MuiThemeProvider>
                 <div className="App">
+                    <Circle/>
                     <Snackbar
                         open={this.state.open}
                         message="Can't Add empty task or Task already exist"
                         autoHideDuration={2000}
                         onRequestClose={this.handleRequestClose}
                     />
-                    <ListA editing={this.state.editing} delete={this.handleDelete} edit={this.handleEdit}
+                    <ListA save={this.handleSave} delete={this.handleDelete} edit={this.handleEdit}
                           items={this.state.items}/>
+
                     <Add add={this.handleAdd}/>
                 </div>
             </MuiThemeProvider>);

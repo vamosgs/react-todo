@@ -41,11 +41,7 @@ class Add extends Component {
                     />
                     <FlatButton  label="ADD"  onClick={ (event) => {
                         this.props.add(event, this.state.dataSource)
-
-                        console.log(this.refs.field.refs.searchTextField.input.value)
-                        // this.refs.field.refs.searchTextField.input.value = null;
                         this.refs.field.refs.searchTextField.input.value = '';
-                        console.log(this.refs.field.refs.searchTextField.input.value)
                     }}/>
 
                 </form>
