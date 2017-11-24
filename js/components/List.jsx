@@ -1,31 +1,36 @@
-import React, {Component} from 'react';
-import {List, ListItem} from 'material-ui/List';
+import React, { Component } from 'react';
+import { List, ListItem } from 'material-ui/List';
 import Delate from 'material-ui/svg-icons/action/delete';
 import Edit from 'material-ui/svg-icons/image/Edit';
 import Save from 'material-ui/svg-icons/content/Save';
+import propTypes from 'prop-types';
 
-class ListA extends Component {
-
-    render() {
-        return (
-            <div>
-                <ul>
-                    <List>
-                        {
-                            this.props.items.map((item, i) => <li key={i}>
+const ListA = props => {
+    return (
+        <div>
+            <ul>
+                <List>
+                    {
+                        props.items.map((item, i) => <li key={i}>
                             <ListItem primaryText={item.name} rightIcon={item.editing ? <Save onClick={(e) => {
-                                this.props.save(e, i)
+                                props.save(e, i)
                             }} /> : <Edit onClick={(e) => {
-                                this.props.edit(i, e)
-                            }}/>}  leftIcon={ <Delate onClick={() => {
-                                this.props.delete(i)
-                            }}/>} />
-                            </li>)
-                        }
-                    </List>
-                </ul>
-            </div>     );
-    }
+                                props.edit(i, e)
+                            }} />} leftIcon={<Delate onClick={() => {
+                                props.delete(i)
+                            }} />} />
+                        </li>)
+                    }
+                </List>
+            </ul>
+        </div>
+    )
+}
+ListA.propTypes = {
+    items: propTypes.array,
+    save: propTypes.func,
+    delete: propTypes.func,
+    edit: propTypes.func
 }
 
 export default ListA;

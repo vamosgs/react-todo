@@ -8,6 +8,8 @@
 
 # production
 
+# editor
+/.idea
 
 # misc
 .DS_Store

@@ -1,52 +1,47 @@
-import React, {Component} from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
+import React, { Component } from 'react';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import PropTypes from 'prop-types';
+
 class Add extends Component {
     constructor(props) {
         super(props);
-        this.handleTask = this.handleTask.bind(this);
-        this.handleDefault = this.handleDefault.bind(this);
-        this.handleClear = this.handleClear.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
         this.state = {
-            dataSource: [],
-            task: ''
+            value: ''
         }
     }
 
-    handleTask(value) {
+    handleAdd(event) {
+        this.props.addTask(event, this.state.value);
+        this.setState({ value: '' })
+    }
+
+    handleChange(event) {
         this.setState({
-            dataSource: [
-                value
-        ]
+            value: event.target.value,
         })
     }
-    handleDefault(e) {
-        e.preventDefault();
-        // this.refs.field.state.searchText = '';
-
-    }
-    handleClear() {
-        console.log('clear')
-    }
     render() {
-
         return (
             <div>
-                <form onSubmit={this.handleDefault}>
-                    <AutoComplete
-                        ref={'field'}
-                        hintText="Add Task"
-                        dataSource={this.state.dataSource}
-                        onUpdateInput={this.handleTask}
-                    />
-                    <FlatButton  label="ADD"  onClick={ (event) => {
-                        this.props.add(event, this.state.dataSource)
-                        this.refs.field.refs.searchTextField.input.value = '';
-                    }}/>
+                <TextField
+                    id="text-field-controlled"
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    floatingLabelText="Add tasks to list"
+                    floatingLabelFixed={false}
+                />
+                <FlatButton label="ADD" color='primary' onClick={this.handleAdd} />
 
-                </form>
-            </div>     );
+            </div>
+        )
     }
+}
+
+Add.PropTypes = {
+    addTask: PropTypes.func
 }
 
 export default Add;

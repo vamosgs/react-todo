@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ListA from './List.jsx';
 import Add from './Add.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -33,13 +33,13 @@ class App extends Component {
             this.setState({
                 open: true,
             });
-        }  else  {
-            this.setState({...this.state.items, items : [...this.state.items , {name: task, editing: false}]})
+        } else {
+            this.setState({ ...this.state.items, items: [...this.state.items, { name: task, editing: false }] })
         }
     }
 
     handleDelete(task) {
-        let TaskObj = {items: this.state.items};
+        let TaskObj = { items: this.state.items };
         TaskObj.items.splice(task, 1);
         this.setState(TaskObj)
     }
@@ -54,25 +54,24 @@ class App extends Component {
     handleEdit(task, event) {
         let thisTask = this.state.items[task].name;
         this.setState({
-            editedtext : thisTask
+            editedtext: thisTask
         })
-        console.log(this.state.editedtext, this.state.items[task].name)
-        let obj = this.state;
-        obj.items[task].editing = this.state.editing ? false : true;
-        if (obj.items[task].editing) {
-            obj.items[task].name =  <input ref={input => this.Editing = input} className='editing' onChange={this.getNewVal} noValidate defaultValue={obj.items[task].name} type="text"/>;
+        let nextState = this.state;
+        nextState.items[task].editing = !this.state.editing;
+        if (nextState.items[task].editing) {
+            nextState.items[task].name = <input ref={input => this.Editing = input} className='editing' onChange={this.getNewVal} noValidate defaultValue={nextState.items[task].name} type="text" />;
         }
     }
     getNewVal(e) {
         this.setState({
-           editedtext: e.target.value
+            editedtext: e.target.value
         });
     }
     render() {
         return (
             <MuiThemeProvider>
                 <div className="App">
-                    <Circle/>
+                    <Circle />
                     <Snackbar
                         open={this.state.open}
                         message="Can't Add empty task or Task already exist"
@@ -80,9 +79,9 @@ class App extends Component {
                         onRequestClose={this.handleRequestClose}
                     />
                     <ListA save={this.handleSave} delete={this.handleDelete} edit={this.handleEdit}
-                          items={this.state.items}/>
+                        items={this.state.items} />
 
-                    <Add add={this.handleAdd}/>
+                    <Add addTask={this.handleAdd} />
                 </div>
             </MuiThemeProvider>);
     }
